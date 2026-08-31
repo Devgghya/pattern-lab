@@ -3,11 +3,11 @@
 @import "../vendor/shadcn-tailwind-4.13.0.css";
 
 :root {
-  --background: #f2eee4;
+  --background: #0a0908;
   --foreground: #17150f;
-  --card: #fffdf7;
+  --card: #fffaf1;
   --card-foreground: #17150f;
-  --popover: #fffdf7;
+  --popover: #fffaf1;
   --popover-foreground: #17150f;
   --primary: #a6112c;
   --primary-foreground: #fff9ee;
@@ -52,23 +52,247 @@
 }
 
 * { box-sizing: border-box; }
-html { background: var(--background); }
+html,
 body {
   margin: 0;
-  background:
-    linear-gradient(rgba(23, 21, 15, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(23, 21, 15, 0.035) 1px, transparent 1px),
-    var(--background);
-  background-size: 24px 24px;
+  width: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  background: var(--background);
+}
+body {
   color: var(--foreground);
   font-family: "Arial Narrow", "Roboto Condensed", Arial, sans-serif;
 }
-button, input, select { font: inherit; }
+button,
+input,
+select { font: inherit; }
+button { -webkit-tap-highlight-color: transparent; }
 input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
 input[type="color"]::-webkit-color-swatch { border: 0; border-radius: 3px; }
-.studio-canvas canvas { display: block; width: 100% !important; height: 100% !important; }
-@keyframes slide-in {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+
+.installation-root {
+  position: relative;
+  width: 100vw;
+  height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+  background: #0a0908;
 }
-.animate-enter { animation: slide-in 500ms cubic-bezier(.2,.8,.2,1) both; }
+
+.installation-canvas {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #0a0908;
+}
+
+.installation-canvas canvas {
+  display: block;
+  width: max(100vw, 100vh) !important;
+  height: max(100vw, 100vh) !important;
+  max-width: none !important;
+  max-height: none !important;
+}
+
+.installation-brand,
+.installation-status,
+.settings-trigger {
+  position: absolute;
+  z-index: 15;
+  color: white;
+  text-shadow: 0 1px 15px rgb(0 0 0 / 55%);
+}
+
+.installation-brand {
+  top: 22px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font: 800 10px/1 var(--font-mono);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.installation-status {
+  bottom: 22px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font: 700 10px/1.1 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.settings-trigger {
+  top: 18px;
+  right: 18px;
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 35%);
+  border-radius: 999px;
+  background: rgb(10 9 8 / 46%);
+  backdrop-filter: blur(14px);
+  transition: transform 180ms ease, background 180ms ease;
+}
+
+.settings-trigger:hover {
+  transform: rotate(24deg);
+  background: rgb(10 9 8 / 70%);
+}
+
+.start-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 50% 35%, rgb(166 17 44 / 18%), transparent 36%),
+    rgb(10 9 8 / 76%);
+  backdrop-filter: blur(16px);
+}
+
+.start-card {
+  width: min(520px, 100%);
+  border: 1px solid rgb(255 250 241 / 22%);
+  border-radius: 16px;
+  padding: clamp(25px, 5vw, 46px);
+  color: #fffaf1;
+  background: rgb(18 16 14 / 88%);
+  box-shadow: 0 32px 90px rgb(0 0 0 / 58%);
+  text-align: center;
+}
+
+.settings-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+}
+
+.settings-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgb(7 6 5 / 42%);
+  backdrop-filter: blur(4px);
+}
+
+.settings-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: min(420px, 100vw);
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 22px;
+  background:
+    linear-gradient(rgba(23, 21, 15, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(23, 21, 15, 0.035) 1px, transparent 1px),
+    #f2eee4;
+  background-size: 24px 24px;
+  box-shadow: -22px 0 70px rgb(0 0 0 / 34%);
+  animation: panel-in 280ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.colour-field {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid #cfc4b3;
+  border-radius: 6px;
+  padding: 7px 8px;
+  background: #fffaf1;
+}
+
+.colour-field span {
+  font: 800 9px/1 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.colour-field input {
+  width: 27px;
+  height: 27px;
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.capture-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0;
+  background: white;
+  transition: opacity 280ms ease-out;
+}
+
+.capture-flash-active {
+  opacity: 0.72;
+  transition-duration: 45ms;
+}
+
+kbd {
+  display: inline-grid;
+  min-width: 23px;
+  min-height: 22px;
+  place-items: center;
+  border: 1px solid #bdb1a1;
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 2px 6px;
+  background: #fffaf1;
+  font: 700 9px/1 var(--font-mono);
+}
+
+@keyframes panel-in {
+  from { opacity: 0; transform: translateX(28px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@media (max-width: 640px) {
+  .installation-brand { top: 17px; left: 17px; }
+  .installation-status { bottom: 17px; left: 17px; }
+  .settings-trigger { top: 13px; right: 13px; }
+  .settings-panel { padding: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

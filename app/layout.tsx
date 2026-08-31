@@ -1,28 +1,33 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
+const isGitHubPages = process.env.GITHUB_ACTIONS === "true";
+const siteOrigin = isGitHubPages
+  ? "https://devgghya.github.io/pattern-lab"
+  : "https://pattern-lab-dev.devgghya.chatgpt.site";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://devgghya.github.io/pattern-lab/"),
-  title: "Pattern Lab — Image to Generative Marks",
+  metadataBase: new URL(`${siteOrigin}/`),
+  title: "Pattern Lab V2 — Live Generative Camera",
   description:
-    "Transform any image into expressive halftone artwork using live, adjustable geometric marks.",
+    "Transform a live webcam feed or uploaded image into expressive, adjustable geometric artwork.",
   openGraph: {
-    title: "Pattern Lab",
-    description: "Turn any image into generative marks.",
-    images: ["https://devgghya.github.io/pattern-lab/og.png"],
+    title: "Pattern Lab V2",
+    description: "Turn a live camera feed or image into generative marks.",
+    images: [`${siteOrigin}/og.png`],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Pattern Lab",
-    description: "Turn any image into generative marks.",
-    images: ["https://devgghya.github.io/pattern-lab/og.png"],
+    title: "Pattern Lab V2",
+    description: "Turn a live camera feed or image into generative marks.",
+    images: [`${siteOrigin}/og.png`],
   },
   alternates: {
-    canonical: "https://devgghya.github.io/pattern-lab/",
+    canonical: `${siteOrigin}/`,
   },
   icons: {
-    icon: "https://devgghya.github.io/pattern-lab/favicon.svg",
-    shortcut: "https://devgghya.github.io/pattern-lab/favicon.svg",
+    icon: `${siteOrigin}/favicon.svg`,
+    shortcut: `${siteOrigin}/favicon.svg`,
   },
 };
 
